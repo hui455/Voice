@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.intl.LocaleList
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -202,13 +203,29 @@ internal fun AsmrPlayback(
         cues == null -> stringResource(R.string.asmr_loading)
         else -> cue?.text
       }
+    val subtitleStyle = MaterialTheme.typography.bodyLarge
+    val subtitleLocale =
+      when (activeLanguage) {
+        SubtitleLanguage.Chinese -> "zh-CN"
+        SubtitleLanguage.Japanese -> "ja"
+        null -> null
+      }
     Surface(
       modifier = Modifier.fillMaxWidth(),
       shape = MaterialTheme.shapes.extraLarge,
       color = MaterialTheme.colorScheme.surfaceContainer,
     ) {
       Column(Modifier.padding(16.dp)) {
-        Text(subtitle.orEmpty(), minLines = 2, style = MaterialTheme.typography.bodyLarge)
+        Text(
+          subtitle.orEmpty(),
+          minLines = 2,
+          style =
+            if (cue != null && subtitleLocale != null) {
+              subtitleStyle.copy(localeList = LocaleList(subtitleLocale))
+            } else {
+              subtitleStyle
+            },
+        )
         if (subtitleError) {
           TextButton(
             onClick = {
