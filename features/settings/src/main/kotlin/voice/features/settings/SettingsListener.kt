@@ -50,6 +50,8 @@ interface SettingsListener {
 
   fun openAudiobookshelf()
 
+  fun openAsmr()
+
   fun onAppVersionClick()
 
   fun openDeveloperMenu()
@@ -100,6 +102,8 @@ interface SettingsListener {
         override fun openFolderPicker() {}
 
         override fun openAudiobookshelf() {}
+
+        override fun openAsmr() {}
 
         override fun onAppVersionClick() {}
 

@@ -1,0 +1,14 @@
+<resources>
+    <string name="asmr_server">ASMR サーバーのアドレス</string>
+    <string name="asmr_connect">接続</string>
+    <string name="asmr_connect_error">ライブラリを読み込めません。アドレスと Wi-Fi 接続を確認してください。</string>
+    <string name="asmr_change_server">サーバーを変更</string>
+    <string name="asmr_empty">ライブラリは空です。</string>
+    <string name="asmr_loading">読み込み中…</string>
+    <string name="asmr_chinese">中国語</string>
+    <string name="asmr_japanese">日本語</string>
+    <string name="asmr_no_subtitles">このトラックに字幕はありません。</string>
+    <string name="asmr_subtitle_error">字幕を読み込めません。</string>
+    <string name="asmr_audio_error">このトラックを再生できません。</string>
+    <string name="asmr_retry">再試行</string>
+</resources>

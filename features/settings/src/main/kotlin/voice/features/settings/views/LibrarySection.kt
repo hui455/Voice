@@ -76,6 +76,7 @@ internal fun LibrarySection(
   useGrid: Boolean,
   onFoldersClick: () -> Unit,
   onAudiobookshelfClick: () -> Unit,
+  onAsmrClick: () -> Unit,
   onUseGridChange: (Boolean) -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -114,6 +115,18 @@ internal fun LibrarySection(
     if (showAudiobookshelf) {
       AudiobookshelfRow(audiobookshelfServer, onAudiobookshelfClick)
     }
+    IslandRow(
+      title = "ASMR",
+      onClick = onAsmrClick,
+      leading = {
+        ShapedIcon(
+          icon = UiR.drawable.ic_headphones,
+          shape = MaterialShapes.Cookie6Sided,
+          containerColor = colors.tertiary,
+          contentColor = colors.onTertiary,
+        )
+      },
+    )
     Spacer(Modifier.height(12.dp))
     Row(
       modifier = Modifier.selectableGroup().padding(horizontal = 16.dp),
@@ -402,6 +415,7 @@ private fun LibrarySectionFoldersWithoutAccessPreview() {
       useGrid = false,
       onFoldersClick = {},
       onAudiobookshelfClick = {},
+      onAsmrClick = {},
       onUseGridChange = {},
     )
   }

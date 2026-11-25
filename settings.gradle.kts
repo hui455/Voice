@@ -141,6 +141,8 @@ include(":core:audiobookshelf:impl")
 
 include(":features:audiobookshelf")
 
+include(":features:asmr")
+
 include(":core:foldersync")
 
 include(":core:datastore")

@@ -336,6 +336,10 @@ class SettingsViewModel(
     }
   }
 
+  override fun openAsmr() {
+    navigator.goTo(Destination.Asmr)
+  }
+
   override fun setAutoSleepTimer(checked: Boolean) {
     mainScope.launch {
       sleepTimerPreferenceStore.updateData { currentPrefs ->

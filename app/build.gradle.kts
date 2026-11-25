@@ -45,7 +45,7 @@ android {
   }
 
   defaultConfig {
-    applicationId = "de.ph1b.audiobook"
+    applicationId = "de.ph1b.audiobook.asmr"
     versionName = providers.gradleProperty("voice.versionName").orNull ?: "1.0.0"
     // F-Droid replaces the next line with sed, keep it on one line.
     versionCode =
@@ -206,6 +206,7 @@ dependencies {
   implementation(projects.core.audiobookshelf.impl)
   implementation(projects.core.foldersync)
   implementation(projects.features.audiobookshelf)
+  implementation(projects.features.asmr)
 
   implementation(libs.appCompat)
   implementation(libs.lifecycle.compose)
