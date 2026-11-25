@@ -239,8 +239,7 @@ private fun AsmrScreen(client: OkHttpClient, pauseBook: () -> Unit, onBack: () -
 
 @Composable
 private fun AsmrRow(title: String, onClick: () -> Unit) {
-  ListItem(
-    modifier = Modifier.clickable(onClick = onClick),
-    headlineContent = { Text(title, style = MaterialTheme.typography.bodyLarge.bookText()) },
-  )
+  ListItem(modifier = Modifier.clickable(onClick = onClick)) {
+    Text(title, style = MaterialTheme.typography.bodyLarge.bookText())
+  }
 }

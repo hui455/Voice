@@ -15,9 +15,11 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -134,15 +136,22 @@ internal fun AsmrPlayback(
       track.title?.takeIf { it.isNotBlank() } ?: track.name,
       style = MaterialTheme.typography.titleLarge.bookText(),
     )
+    val slider = rememberSliderState()
+    SideEffect {
+      slider.value =
+        dragging ?: position.coerceIn(0L, duration).toFloat() / duration.coerceAtLeast(1L)
+    }
     Slider(
-      value = dragging ?: position.coerceIn(0L, duration).toFloat(),
+      state = slider,
       onValueChange = { dragging = it },
       onValueChangeFinished = {
-        dragging?.let { player.seekTo(it.toLong()) }
+        dragging?.let {
+          position = (it * duration).toLong()
+          player.seekTo(position)
+        }
         dragging = null
       },
       enabled = duration > 0L && !audioError,
-      valueRange = 0f..duration.coerceAtLeast(1L).toFloat(),
     )
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
       Text(formatTime(position), style = MaterialTheme.typography.labelMedium)

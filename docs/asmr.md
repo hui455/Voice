@@ -14,4 +14,4 @@ Playback pauses when the app leaves the foreground.
 The app reads the library from `/api/library`, streams tracks from `/media/{work}/{track}`, and reads WebVTT
 from `/subs/{work}/{track}?lang=zh` or `?lang=ja`. The server address comes from the settings screen.
 
-Build with `./gradlew :app:assembleFossDebug`.
+Build with `./gradlew :app:assembleFossDebug --no-scan`.
