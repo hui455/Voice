@@ -41,7 +41,6 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
-import okhttp3.OkHttpClient
 import voice.core.strings.R as StringsR
 import voice.core.ui.bookText
 
@@ -49,7 +48,6 @@ import voice.core.ui.bookText
 @Composable
 internal fun AsmrPlayback(
   server: AsmrServer,
-  client: OkHttpClient,
   work: AsmrWork,
   track: AsmrTrack,
   preferredLanguage: SubtitleLanguage,
@@ -58,9 +56,9 @@ internal fun AsmrPlayback(
 ) {
   val context = LocalContext.current.applicationContext
   val player =
-    remember(client, context, work.id, track.id) {
+    remember(server, context, work.id, track.id) {
       ExoPlayer.Builder(context)
-        .setMediaSourceFactory(DefaultMediaSourceFactory(OkHttpDataSource.Factory(client)))
+        .setMediaSourceFactory(DefaultMediaSourceFactory(OkHttpDataSource.Factory(server.client)))
         .setAudioAttributes(
           AudioAttributes.Builder()
             .setUsage(C.USAGE_MEDIA)

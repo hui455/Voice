@@ -1,6 +1,7 @@
 package voice.features.asmr
 
 import java.io.IOException
+import java.net.Proxy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
@@ -40,7 +41,16 @@ internal enum class SubtitleLanguage(val code: String) {
   Japanese("ja"),
 }
 
-internal class AsmrServer(private val origin: HttpUrl, private val client: OkHttpClient) {
+internal class AsmrHttpException(val status: Int) : IOException("HTTP $status")
+
+internal class AsmrServer(private val origin: HttpUrl, client: OkHttpClient) {
+  val client =
+    client
+      .newBuilder()
+      .followRedirects(false)
+      .apply { if (origin.host.isLanHost()) proxy(Proxy.NO_PROXY) }
+      .build()
+
   suspend fun library(): List<AsmrWork> =
     withContext(Dispatchers.IO) {
       json.decodeFromString<Library>(get(url("api", "library"))).works
@@ -68,7 +78,7 @@ internal class AsmrServer(private val origin: HttpUrl, private val client: OkHtt
 
   private suspend fun get(url: HttpUrl): String =
     client.newCall(Request.Builder().url(url).build()).executeAsync().use { response ->
-      if (!response.isSuccessful) throw IOException("HTTP ${response.code}")
+      if (!response.isSuccessful) throw AsmrHttpException(response.code)
       response.body.string()
     }
 
@@ -86,4 +96,22 @@ internal class AsmrServer(private val origin: HttpUrl, private val client: OkHtt
           it.fragment == null
       }
   }
+}
+
+private fun String.isLanHost(): Boolean {
+  val hostname = trimEnd('.')
+  if (hostname == "localhost" || hostname.endsWith(".local")) return true
+  if (':' in hostname) {
+    val prefix = hostname.substringBefore(':').toIntOrNull(16) ?: return hostname == "::1"
+    return prefix in 0xfc00..0xfdff || prefix in 0xfe80..0xfebf
+  }
+  val parts = hostname.split('.')
+  if (parts.size != 4 || parts.any { (it.toIntOrNull() ?: -1) !in 0..255 }) return false
+  val first = parts[0].toInt()
+  val second = parts[1].toInt()
+  return first == 10 ||
+    first == 127 ||
+    (first == 172 && second in 16..31) ||
+    (first == 192 && second == 168) ||
+    (first == 169 && second == 254)
 }
