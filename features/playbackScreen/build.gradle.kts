@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+  implementation(projects.core.asmr)
   implementation(projects.core.playback.api)
   implementation(projects.core.audiobookshelf.api)
   implementation(projects.core.data.api)

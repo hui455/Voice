@@ -1,6 +1,6 @@
-package voice.features.asmr
+package voice.core.asmr
 
-internal data class AsmrCue(val startMs: Long, val endMs: Long, val text: String)
+public data class AsmrCue(val startMs: Long, val endMs: Long, val text: String)
 
 private val time = Regex("""(?:(\d+):)?(\d{2}):(\d{2})[.,](\d{3})""")
 private val timing = Regex("""^(\S+)\s+-->\s+(\S+)(?:\s.*)?$""")
@@ -32,7 +32,7 @@ internal fun parseAsmrVtt(vtt: String): List<AsmrCue> =
     }
     .sortedBy { it.startMs }
 
-internal fun List<AsmrCue>.at(positionMs: Long): AsmrCue? {
+public fun List<AsmrCue>.at(positionMs: Long): AsmrCue? {
   val found = binarySearchBy(positionMs) { it.startMs }
   val index = if (found < 0) -found - 2 else found
   return getOrNull(index)?.takeIf { positionMs - it.endMs < 10_000 }

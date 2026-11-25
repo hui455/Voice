@@ -114,8 +114,6 @@ fun BookSearchScreen(modifier: Modifier = Modifier) {
         override fun onBookLongClick(id: BookId) = viewModel.onBookLongClick(id)
 
         override fun onPlayClick(id: BookId) = viewModel.onPlayClick(id)
-
-        override fun onFoldersClick() = viewModel.onFoldersClick()
       },
     modifier = modifier,
   )
@@ -140,8 +138,6 @@ internal interface BookSearchListener {
 
   fun onPlayClick(id: BookId)
 
-  fun onFoldersClick()
-
   companion object {
     val Noop =
       object : BookSearchListener {
@@ -162,8 +158,6 @@ internal interface BookSearchListener {
         override fun onBookLongClick(id: BookId) {}
 
         override fun onPlayClick(id: BookId) {}
-
-        override fun onFoldersClick() {}
       }
   }
 }
@@ -244,7 +238,6 @@ internal fun BookSearch(
               NoResults(
                 viewState = state,
                 contentPadding = contentPadding,
-                onFoldersClick = listener::onFoldersClick,
               )
           }
         }

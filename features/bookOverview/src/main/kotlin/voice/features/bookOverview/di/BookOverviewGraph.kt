@@ -3,6 +3,7 @@ package voice.features.bookOverview.di
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
+import voice.core.asmr.AsmrLibrary
 import voice.features.bookOverview.overview.BookOverviewViewModel
 import voice.features.bookOverview.search.BookSearchViewModel
 
@@ -10,6 +11,7 @@ abstract class BookOverviewScope private constructor()
 
 @GraphExtension(scope = BookOverviewScope::class)
 interface BookOverviewGraph {
+  val asmrLibrary: AsmrLibrary
   val bookOverviewViewModel: BookOverviewViewModel
   val bookSearchViewModel: BookSearchViewModel
 

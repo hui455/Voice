@@ -7,17 +7,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
@@ -44,7 +40,6 @@ import voice.core.ui.VoiceTheme
 internal fun NoResults(
   viewState: BookSearchViewState.NoResults,
   contentPadding: PaddingValues,
-  onFoldersClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   Column(
@@ -82,21 +77,6 @@ internal fun NoResults(
       color = MaterialTheme.colorScheme.onSurfaceVariant,
       textAlign = TextAlign.Center,
     )
-    FilledTonalButton(onClick = onFoldersClick) {
-      Icon(
-        painter = painterResource(UiR.drawable.ic_folder),
-        contentDescription = null,
-        modifier = Modifier.size(ButtonDefaults.IconSize),
-      )
-      Spacer(Modifier.width(ButtonDefaults.IconSpacing))
-      Text(stringResource(StringsR.string.library_folders_title))
-    }
-    Text(
-      text = stringResource(StringsR.string.library_search_no_results_folders_hint),
-      style = MaterialTheme.typography.bodySmall,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
-      textAlign = TextAlign.Center,
-    )
   }
 }
 
@@ -108,7 +88,6 @@ private fun NoResultsPreview() {
       NoResults(
         viewState = BookSearchViewState.NoResults(query = "dragonlance"),
         contentPadding = PaddingValues(),
-        onFoldersClick = {},
       )
     }
   }

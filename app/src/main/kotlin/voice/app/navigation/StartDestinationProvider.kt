@@ -38,7 +38,7 @@ class StartDestinationProvider(
         return listOf(Destination.BookOverview, Destination.Playback(bookId))
       }
     }
-    return listOf(Destination.BookOverview, Destination.Asmr)
+    return listOf(Destination.BookOverview)
   }
 
   // Lets debug builds start on any screen, see the emulator skill. Release builds ignore it, since

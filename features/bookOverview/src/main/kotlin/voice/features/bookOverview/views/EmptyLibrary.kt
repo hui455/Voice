@@ -32,15 +32,17 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import voice.core.strings.R as StringsR
+import voice.core.asmr.AsmrSyncState
 import voice.core.ui.R as UiR
 import voice.core.ui.ShapedIcon
 import voice.core.ui.VoiceTheme
+import voice.features.bookOverview.R
 
 @Composable
 internal fun EmptyLibrary(
   onShowFoldersClick: () -> Unit,
   modifier: Modifier = Modifier,
+  state: AsmrSyncState = AsmrSyncState.Ready,
 ) {
   // on short windows, like a phone in landscape, the button would end up below the fold
   val showHero =
@@ -55,18 +57,19 @@ internal fun EmptyLibrary(
         Spacer(Modifier.height(16.dp))
       }
       Text(
-        text = stringResource(StringsR.string.library_empty_title),
+        text =
+          stringResource(
+            when (state) {
+              AsmrSyncState.Loading -> R.string.asmr_shelf_loading
+              AsmrSyncState.Ready -> R.string.asmr_shelf_empty
+              AsmrSyncState.Unavailable -> R.string.asmr_shelf_unavailable
+            },
+          ),
         style = MaterialTheme.typography.headlineMediumEmphasized,
         textAlign = TextAlign.Center,
         modifier = Modifier.semantics { heading() },
       )
-      Spacer(Modifier.height(8.dp))
-      Text(
-        text = stringResource(StringsR.string.library_empty_message),
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.Center,
-      )
+      if (state == AsmrSyncState.Loading) return@Column
       Spacer(Modifier.height(24.dp))
       Button(
         onClick = onShowFoldersClick,
@@ -75,13 +78,13 @@ internal fun EmptyLibrary(
         modifier = Modifier.heightIn(min = ButtonDefaults.MediumContainerHeight),
       ) {
         Icon(
-          painter = painterResource(UiR.drawable.ic_folder),
+          painter = painterResource(UiR.drawable.ic_dns),
           contentDescription = null,
           modifier = Modifier.size(ButtonDefaults.MediumIconSize),
         )
         Spacer(Modifier.size(ButtonDefaults.iconSpacingFor(ButtonDefaults.MediumContainerHeight)))
         Text(
-          text = stringResource(StringsR.string.library_empty_action),
+          text = stringResource(R.string.asmr_shelf_server_settings),
           style = MaterialTheme.typography.titleMedium,
         )
       }

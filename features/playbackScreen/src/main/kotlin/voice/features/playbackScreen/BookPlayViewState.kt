@@ -29,6 +29,7 @@ data class BookPlayViewState(
   /** A server book that isn't downloaded while the server can't be reached. */
   val unavailable: Boolean = false,
   val upNext: UpNextViewState? = null,
+  val asmrCaption: String? = null,
 ) {
 
   @Immutable

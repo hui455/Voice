@@ -26,6 +26,8 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -34,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -129,21 +132,37 @@ internal fun BookPlayContent(
         }
       Control.Seek ->
         MediaControlsDirection {
-          SeekSection(
-            playedTime = viewState.playedTime,
-            duration = viewState.duration,
-            playing = viewState.playing,
-            clock = clock,
-            onSeek = onSeek,
-            jumpBack = viewState.jumpBack,
-            unavailable = viewState.unavailable,
-            bookPercent =
-              if (showBookProgress) null
-              else percentFormat.format(viewState.bookProgress.toDouble()),
-            onJumpBack = onJumpBack,
-            onJumpBackExpire = onJumpBackExpire,
-            modifier = Modifier.fillMaxWidth().entrance(entrance, 3),
-          )
+          Column {
+            viewState.asmrCaption?.let { caption ->
+              Surface(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                shape = MaterialTheme.shapes.large,
+              ) {
+                Text(
+                  caption,
+                  modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
+                  textAlign = TextAlign.Center,
+                  style = MaterialTheme.typography.bodyMedium,
+                )
+              }
+            }
+            SeekSection(
+              playedTime = viewState.playedTime,
+              duration = viewState.duration,
+              playing = viewState.playing,
+              clock = clock,
+              onSeek = onSeek,
+              jumpBack = viewState.jumpBack,
+              unavailable = viewState.unavailable,
+              bookPercent =
+                if (showBookProgress) null
+                else percentFormat.format(viewState.bookProgress.toDouble()),
+              onJumpBack = onJumpBack,
+              onJumpBackExpire = onJumpBackExpire,
+              modifier = Modifier.fillMaxWidth().entrance(entrance, 3),
+            )
+          }
         }
       Control.UpNext -> {
         val transition = updateTransition(viewState.upNext)

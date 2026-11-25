@@ -207,6 +207,7 @@ dependencies {
   implementation(projects.core.foldersync)
   implementation(projects.features.audiobookshelf)
   implementation(projects.features.asmr)
+  implementation(projects.core.asmr)
 
   implementation(libs.appCompat)
   implementation(libs.lifecycle.compose)

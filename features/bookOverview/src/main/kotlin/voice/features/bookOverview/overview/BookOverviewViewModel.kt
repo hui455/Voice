@@ -605,7 +605,7 @@ class BookOverviewViewModel(
   }
 
   fun onShowFoldersClick() {
-    navigator.goTo(Destination.FolderPicker)
+    navigator.goTo(Destination.Asmr)
   }
 
   fun onSurveyClick() {

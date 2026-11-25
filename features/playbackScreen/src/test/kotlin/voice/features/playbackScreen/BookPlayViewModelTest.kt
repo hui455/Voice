@@ -167,6 +167,7 @@ class BookPlayViewModelTest {
       serverLibrary = serverLibrary,
       lastPlaybackSpeedStore = LastPlaybackSpeedStore(MemoryDataStore(1F)),
       analytics = analytics,
+      asmrCaptions = mockk(),
     )
 
   @Test
@@ -1097,6 +1098,7 @@ class BookPlayViewModelTest {
         },
       lastPlaybackSpeedStore = LastPlaybackSpeedStore(MemoryDataStore(lastPlaybackSpeed)),
       analytics = analytics,
+      asmrCaptions = mockk(),
     )
   }
 }

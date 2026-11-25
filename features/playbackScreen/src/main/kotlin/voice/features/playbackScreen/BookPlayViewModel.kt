@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import dev.zacsweers.metro.Assisted
@@ -26,6 +27,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import voice.core.analytics.api.Analytics
+import voice.core.asmr.AsmrCaptions
+import voice.core.asmr.at
 import voice.core.audiobookshelf.ServerLibrary
 import voice.core.common.DispatcherProvider
 import voice.core.common.MainScope
@@ -37,6 +40,7 @@ import voice.core.data.ListeningEvent
 import voice.core.data.category
 import voice.core.data.displayName
 import voice.core.data.durationMs
+import voice.core.data.isAsmr
 import voice.core.data.markForPosition
 import voice.core.data.nextInSeries
 import voice.core.data.repo.BookRepository
@@ -89,6 +93,7 @@ class BookPlayViewModel(
   private val serverLibrary: ServerLibrary,
   private val lastPlaybackSpeedStore: LastPlaybackSpeedStore,
   private val analytics: Analytics,
+  private val asmrCaptions: AsmrCaptions,
   @Assisted private val bookId: BookId,
 ) {
 
@@ -126,7 +131,7 @@ class BookPlayViewModel(
 
     val experimentalPlaybackPersistence = experimentalPlaybackPersistenceFeatureFlag.get()
     val livePlaybackState =
-      if (experimentalPlaybackPersistence) {
+      if (experimentalPlaybackPersistence || bookId.isAsmr) {
         remember(bookId) { player.livePlaybackStateFlow(bookId) }.collectAsState(null).value
       } else {
         null
@@ -147,6 +152,19 @@ class BookPlayViewModel(
         ?: (managerPlayState == PlayStateManager.PlayState.Playing(bookId))
 
     val currentMark = book.currentChapter.markForPosition(book.content.positionInChapter)
+    val caption =
+      if (bookId.isAsmr) {
+        val chapter = book.currentChapter.id
+        key(chapter) {
+          val cues =
+            remember(chapter) { asmrCaptions.forChapter(bookId, chapter) }
+              .collectAsState(initial = emptyList())
+              .value
+          cues
+            .takeIf { it.isNotEmpty() }
+            ?.let { it.at(book.content.positionInChapter)?.text.orEmpty() }
+        }
+      } else null
     val positionInCurrentMark =
       if (isPlaying && currentMark.durationMs > 0) {
         val relativePosition = book.content.positionInChapter - currentMark.startMs
@@ -187,6 +205,7 @@ class BookPlayViewModel(
       }
     return BookPlayViewState(
       sleepTimerState = sleepTime.toViewState(),
+      asmrCaption = caption,
       playing = isPlaying,
       title = book.name,
       author = book.author,

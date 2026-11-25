@@ -216,10 +216,6 @@ class BookSearchViewModel(
     }
   }
 
-  fun onFoldersClick() {
-    navigator.goTo(Destination.FolderPicker)
-  }
-
   fun onBackClick() {
     navigator.goBack()
   }

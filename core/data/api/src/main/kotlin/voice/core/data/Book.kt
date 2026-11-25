@@ -43,7 +43,9 @@ public data class Book(
   // each change of the book on the server can bring a new cover, so it gets a new url
   val serverCoverUrl: String?
     get() =
-      if (id.isRemote) {
+      if (id.isAsmr) {
+        "${id.asmrWorkUrl}/cover"
+      } else if (id.isRemote) {
         "${id.value}/cover?ts=${chapters.first().fileLastModified.toEpochMilliseconds()}"
       } else {
         null

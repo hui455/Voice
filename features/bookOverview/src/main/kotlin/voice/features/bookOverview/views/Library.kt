@@ -150,7 +150,11 @@ internal fun Library(
       if (viewState.showEmptyLibrary) {
         val index = entranceIndex()
         item(span = { GridItemSpan(maxLineSpan) }) {
-          EmptyLibrary(onShowFoldersClick, Modifier.entrance(entrance, index))
+          EmptyLibrary(
+            onShowFoldersClick,
+            Modifier.entrance(entrance, index),
+            viewState.asmrSyncState,
+          )
         }
       }
       if (hero != null) {

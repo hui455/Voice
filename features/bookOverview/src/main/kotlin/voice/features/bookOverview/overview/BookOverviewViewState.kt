@@ -3,6 +3,7 @@ package voice.features.bookOverview.overview
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.State
 import kotlin.time.Duration
+import voice.core.asmr.AsmrSyncState
 import voice.core.data.BookCategory
 import voice.core.data.BookId
 import voice.features.bookOverview.select.SelectionEditViewState
@@ -35,6 +36,7 @@ data class BookOverviewViewState(
   // null while Voice never counted any listening
   val listenedThisWeek: Duration? = null,
   val supportCard: SupportCardViewState? = null,
+  val asmrSyncState: AsmrSyncState = AsmrSyncState.Ready,
 ) {
 
   // a switch only shows once it has something to filter, so a library without it stays as it was

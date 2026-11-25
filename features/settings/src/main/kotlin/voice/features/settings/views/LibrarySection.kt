@@ -3,7 +3,6 @@
 package voice.features.settings.views
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseOutBack
 import androidx.compose.animation.core.LinearEasing
@@ -17,7 +16,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -25,17 +23,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,11 +51,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import voice.core.strings.R as StringsR
-import voice.core.ui.AttentionBadge
 import voice.core.ui.CheckBadge
 import voice.core.ui.R as UiR
 import voice.core.ui.ShapedIcon
@@ -69,13 +61,7 @@ import voice.core.ui.VoiceTheme
 
 @Composable
 internal fun LibrarySection(
-  folderNames: List<String>,
-  foldersWithoutAccess: Boolean,
-  audiobookshelfServer: String?,
-  showAudiobookshelf: Boolean,
   useGrid: Boolean,
-  onFoldersClick: () -> Unit,
-  onAudiobookshelfClick: () -> Unit,
   onAsmrClick: () -> Unit,
   onUseGridChange: (Boolean) -> Unit,
   modifier: Modifier = Modifier,
@@ -91,30 +77,6 @@ internal fun LibrarySection(
       else colors.tertiaryContainer,
     contentColor = if (dark) colors.onSurface else colors.onTertiaryContainer,
   ) {
-    IslandRow(
-      title = stringResource(StringsR.string.library_folders_title),
-      onClick = onFoldersClick,
-      leading = {
-        BadgedBox(
-          badge = {
-            if (foldersWithoutAccess) {
-              AttentionBadge(stringResource(StringsR.string.library_folders_no_access_badge))
-            }
-          },
-        ) {
-          ShapedIcon(
-            icon = UiR.drawable.ic_folder,
-            shape = MaterialShapes.Cookie6Sided,
-            containerColor = MaterialTheme.colorScheme.tertiary,
-            contentColor = MaterialTheme.colorScheme.onTertiary,
-          )
-        }
-      },
-      summary = { FolderNames(folderNames) },
-    )
-    if (showAudiobookshelf) {
-      AudiobookshelfRow(audiobookshelfServer, onAudiobookshelfClick)
-    }
     IslandRow(
       title = "ASMR",
       onClick = onAsmrClick,
@@ -147,45 +109,6 @@ internal fun LibrarySection(
     }
   }
 }
-
-@Composable
-private fun FolderNames(folderNames: List<String>) {
-  if (folderNames.isEmpty()) {
-    Text(stringResource(StringsR.string.settings_library_folders_summary))
-    return
-  }
-  FlowRow(
-    modifier = Modifier.padding(top = 4.dp).animateContentSize(),
-    horizontalArrangement = Arrangement.spacedBy(6.dp),
-    verticalArrangement = Arrangement.spacedBy(6.dp),
-  ) {
-    folderNames.take(MAX_FOLDER_CHIPS).forEach { name ->
-      FolderChip(name)
-    }
-    if (folderNames.size > MAX_FOLDER_CHIPS) {
-      FolderChip("+${folderNames.size - MAX_FOLDER_CHIPS}")
-    }
-  }
-}
-
-@Composable
-private fun FolderChip(text: String) {
-  Surface(
-    shape = CircleShape,
-    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.14F),
-    contentColor = LocalContentColor.current,
-  ) {
-    Text(
-      modifier = Modifier.widthIn(max = 160.dp).padding(horizontal = 10.dp, vertical = 4.dp),
-      text = text,
-      style = MaterialTheme.typography.labelMedium,
-      maxLines = 1,
-      overflow = TextOverflow.Ellipsis,
-    )
-  }
-}
-
-private const val MAX_FOLDER_CHIPS = 3
 
 @Composable
 private fun LayoutTile(
@@ -373,48 +296,12 @@ private fun DrawScope.drawMiniList(
   }
 }
 
-@Composable
-private fun AudiobookshelfRow(
-  server: String?,
-  onClick: () -> Unit,
-) {
-  IslandRow(
-    title = stringResource(StringsR.string.audiobookshelf_title),
-    onClick = onClick,
-    leading = {
-      ShapedIcon(
-        icon = UiR.drawable.ic_dns,
-        shape = MaterialShapes.Cookie9Sided,
-        containerColor = MaterialTheme.colorScheme.tertiary,
-        contentColor = MaterialTheme.colorScheme.onTertiary,
-      )
-    },
-    summary = {
-      if (server != null) {
-        Text(
-          text = server,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-        )
-      } else {
-        Text(stringResource(StringsR.string.settings_library_audiobookshelf_summary))
-      }
-    },
-  )
-}
-
 @Preview
 @Composable
-private fun LibrarySectionFoldersWithoutAccessPreview() {
+private fun LibrarySectionPreview() {
   VoiceTheme {
     LibrarySection(
-      folderNames = listOf("Audiobooks"),
-      foldersWithoutAccess = true,
-      audiobookshelfServer = null,
-      showAudiobookshelf = false,
       useGrid = false,
-      onFoldersClick = {},
-      onAudiobookshelfClick = {},
       onAsmrClick = {},
       onUseGridChange = {},
     )

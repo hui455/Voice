@@ -1,6 +1,6 @@
 <resources>
     <string name="asmr_server">ASMR 服务地址</string>
-    <string name="asmr_connect">连接</string>
+    <string name="asmr_connect">同步到书架</string>
     <string name="asmr_connect_error">无法读取作品库。请检查地址和 Wi-Fi 连接。</string>
     <string name="asmr_http_error">服务器返回 HTTP %1$d。请检查 ASMR 服务地址。</string>
     <string name="asmr_format_error">服务器返回的内容无法识别为 ASMR 作品库。</string>
@@ -9,13 +9,5 @@
     <string name="asmr_tls_error">无法验证 HTTPS 连接。请检查服务地址和证书。</string>
     <string name="asmr_network_error">Voice ASMR 连不到服务器。请检查应用的 WLAN 联网权限和 VPN 设置。</string>
     <string name="asmr_read_error">读取作品库时连接中断，请重试。</string>
-    <string name="asmr_change_server">更换服务器</string>
-    <string name="asmr_empty">作品库是空的。</string>
     <string name="asmr_loading">加载中…</string>
-    <string name="asmr_chinese">中文</string>
-    <string name="asmr_japanese">日语</string>
-    <string name="asmr_no_subtitles">此音轨没有字幕。</string>
-    <string name="asmr_subtitle_error">无法加载字幕。</string>
-    <string name="asmr_audio_error">无法播放此音轨。</string>
-    <string name="asmr_retry">重试</string>
 </resources>

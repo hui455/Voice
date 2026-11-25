@@ -1,0 +1,6 @@
+<resources>
+    <string name="asmr_shelf_loading">正在同步 ASMR 作品…</string>
+    <string name="asmr_shelf_empty">ASMR 书架还没有作品</string>
+    <string name="asmr_shelf_unavailable">无法连接 ASMR 服务器</string>
+    <string name="asmr_shelf_server_settings">ASMR 服务器设置</string>
+</resources>

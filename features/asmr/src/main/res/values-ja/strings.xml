@@ -1,6 +1,6 @@
 <resources>
     <string name="asmr_server">ASMR サーバーのアドレス</string>
-    <string name="asmr_connect">接続</string>
+    <string name="asmr_connect">本棚を同期</string>
     <string name="asmr_connect_error">ライブラリを読み込めません。アドレスと Wi-Fi 接続を確認してください。</string>
     <string name="asmr_http_error">サーバーが HTTP %1$d を返しました。ASMR サーバーのアドレスを確認してください。</string>
     <string name="asmr_format_error">サーバーの応答を ASMR ライブラリとして読み込めません。</string>
@@ -9,13 +9,5 @@
     <string name="asmr_tls_error">HTTPS 接続を確認できません。サーバーのアドレスと証明書を確認してください。</string>
     <string name="asmr_network_error">Voice ASMR からサーバーに接続できません。アプリの Wi-Fi アクセスと VPN の設定を確認してください。</string>
     <string name="asmr_read_error">ライブラリの読み込み中に接続が切れました。再試行してください。</string>
-    <string name="asmr_change_server">サーバーを変更</string>
-    <string name="asmr_empty">ライブラリは空です。</string>
     <string name="asmr_loading">読み込み中…</string>
-    <string name="asmr_chinese">中国語</string>
-    <string name="asmr_japanese">日本語</string>
-    <string name="asmr_no_subtitles">このトラックに字幕はありません。</string>
-    <string name="asmr_subtitle_error">字幕を読み込めません。</string>
-    <string name="asmr_audio_error">このトラックを再生できません。</string>
-    <string name="asmr_retry">再試行</string>
 </resources>

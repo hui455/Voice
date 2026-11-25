@@ -14,6 +14,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import voice.core.data.BookContent
 import voice.core.data.BookId
+import voice.core.data.isAsmr
 import voice.core.data.isRemote
 import voice.core.data.repo.internals.dao.BookContentDao
 
@@ -64,7 +65,8 @@ public class BookContentRepoImpl(private val dao: BookContentDao) : BookContentR
     cache.update { contents ->
       changed.clear()
       contents!!.map { content ->
-        val isActive = if (content.id.isRemote) content.isActive else content.id in active
+        val isActive =
+          if (content.id.isRemote || content.id.isAsmr) content.isActive else content.id in active
         if (isActive == content.isActive) {
           content
         } else {

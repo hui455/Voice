@@ -1,0 +1,6 @@
+<resources>
+    <string name="asmr_shelf_loading">ASMR ライブラリを読み込み中…</string>
+    <string name="asmr_shelf_empty">ASMR ライブラリは空です</string>
+    <string name="asmr_shelf_unavailable">ASMR サーバーに接続できません</string>
+    <string name="asmr_shelf_server_settings">ASMR サーバーの設定</string>
+</resources>

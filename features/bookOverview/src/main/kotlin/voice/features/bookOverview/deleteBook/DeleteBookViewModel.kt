@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import voice.core.common.DispatcherProvider
 import voice.core.common.MainScope
 import voice.core.data.BookId
+import voice.core.data.isAsmr
 import voice.core.data.isRemote
 import voice.core.data.repo.BookRepository
 import voice.core.logging.api.Logger
@@ -39,7 +40,7 @@ class DeleteBookViewModel(
 
   override suspend fun items(bookId: BookId): List<BottomSheetItem> {
     // Voice never deletes files on a server
-    if (bookId.isRemote) return emptyList()
+    if (bookId.isRemote || bookId.isAsmr) return emptyList()
     return listOf(BottomSheetItem.DeleteBook)
   }
 

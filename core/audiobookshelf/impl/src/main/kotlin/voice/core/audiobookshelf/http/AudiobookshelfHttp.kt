@@ -90,6 +90,7 @@ internal class AudiobookshelfHttp(
   private inner class AccessTokenInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
       val request = chain.request()
+      if (request.url.encodedPath.startsWith("/api/voice/")) return chain.proceed(request)
       val account = currentAccount()
       if (account == null || !request.url.toString().startsWith(account.serverUrl)) {
         return chain.proceed(request)
@@ -105,6 +106,7 @@ internal class AudiobookshelfHttp(
       response: Response,
     ): Request? {
       val request = response.request
+      if (request.url.encodedPath.startsWith("/api/voice/")) return null
       synchronized(this) {
         val account = currentAccount() ?: return null
         if (!request.url.toString().startsWith(account.serverUrl) || account.needsLogin) return null

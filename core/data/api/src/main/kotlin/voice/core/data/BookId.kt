@@ -28,6 +28,12 @@ public const val AUDIOBOOKSHELF_SCHEME: String = "abs"
 public val BookId.isRemote: Boolean
   get() = value.startsWith("$AUDIOBOOKSHELF_SCHEME:")
 
+public val BookId.asmrWorkUrl: String?
+  get() = value.takeIf { it.startsWith("asmr:") }?.removePrefix("asmr:")
+
+public val BookId.isAsmr: Boolean
+  get() = asmrWorkUrl != null
+
 public fun BookId.isIn(folder: Uri): Boolean {
   val book = toUri()
   // a single file added on its own has a document uri, so nothing is in it

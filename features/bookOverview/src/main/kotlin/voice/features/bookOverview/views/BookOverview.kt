@@ -32,6 +32,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -104,11 +105,21 @@ fun BookOverviewScreen(modifier: Modifier = Modifier) {
     }
   val bookOverviewViewModel = bookGraph.bookOverviewViewModel
 
-  // Voice stays alive in the background, so books copied meanwhile are found when it comes back
   LifecycleEventEffect(Lifecycle.Event.ON_START) {
-    bookOverviewViewModel.attach()
+    bookGraph.asmrLibrary.refreshInBackground()
   }
-  val viewState = bookOverviewViewModel.state()
+  val asmrSync = bookGraph.asmrLibrary.state.collectAsState()
+  val state = bookOverviewViewModel.state()
+  val viewState =
+    state.copy(
+      showEmptyLibrary =
+        state.showEmptyLibrary ||
+          (state.showStoragePermissionBugCard && state.sections.values.all { it.isEmpty() }),
+      showStoragePermissionBugCard = false,
+      showFolderAccessBadge = false,
+      sources = emptyList(),
+      asmrSyncState = asmrSync.value,
+    )
   val snackbarHostState = remember { SnackbarHostState() }
   val resources = LocalResources.current
   val undoLabel = stringResource(StringsR.string.common_action_undo)

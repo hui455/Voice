@@ -1,17 +1,16 @@
 # Voice ASMR
 
-Voice ASMR adds a local network library to Voice. It installs as a separate app with the ID
+Voice ASMR uses the Voice bookshelf and player for an ASMR2 server. Its app ID is
 `de.ph1b.audiobook.asmr`.
 
 1. Connect the phone and the ASMR2 server to the same network.
-2. Open **Voice ASMR**. You can also open **Settings → Library → ASMR** within the app.
-3. Enter the server address, including `http://` and the port, then tap **Connect**.
-4. Open a work and select a track. Use the language buttons to switch between Chinese and Japanese subtitles.
+2. Open **Voice ASMR**. The bookshelf loads from the default server at `http://192.168.5.103:8899`.
+3. Select a work on the bookshelf to open the Voice player. Use its chapter controls to select an audio track.
+4. To use another server, open **Settings → Library → ASMR**. Enter its address and sync the bookshelf.
 
-The screen shows the subtitle for the current playback position. It uses each track's available languages.
-Playback pauses when the app leaves the foreground.
+The player shows Chinese subtitles when the track has them. Voice manages playback, bookmarks, and listening progress.
 
-The app reads the library from `/api/library`, streams tracks from `/media/{work}/{track}`, and reads WebVTT
-from `/subs/{work}/{track}?lang=zh` or `?lang=ja`. The server address comes from the settings screen.
+The ASMR2 server provides the catalog, audio, covers, and Chinese WebVTT under `/api/voice/`.
+Its catalog reads track durations with PyAV.
 
 Build with `./gradlew :app:assembleFossDebug --no-scan`.
