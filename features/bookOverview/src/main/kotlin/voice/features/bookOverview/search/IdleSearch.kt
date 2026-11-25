@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import voice.core.strings.R as StringsR
 import voice.core.ui.R as UiR
 import voice.core.ui.VoiceTheme
+import voice.features.bookOverview.R
 
 @Composable
 internal fun IdleSearch(
@@ -46,8 +48,29 @@ internal fun IdleSearch(
   Column(
     modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(contentPadding),
   ) {
-    val recentSearches = viewState.recentSearches ?: return@Column
-    if (recentSearches.isEmpty()) {
+    val recentSearches = viewState.recentSearches
+    val keywords = viewState.suggestedKeywords.filterNot { it in recentSearches.orEmpty() }
+    if (keywords.isNotEmpty()) {
+      Text(
+        text = stringResource(R.string.asmr_search_keywords),
+        modifier = Modifier.padding(start = 8.dp, top = 12.dp),
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+      FlowRow(
+        modifier = Modifier.padding(start = 4.dp, end = 4.dp, bottom = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+      ) {
+        keywords.forEach { keyword ->
+          AssistChip(
+            onClick = { listener.onRecentSearchClick(keyword) },
+            label = { Text(keyword, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+          )
+        }
+      }
+    }
+    if (recentSearches == null) return@Column
+    if (recentSearches.isEmpty() && keywords.isEmpty()) {
       Text(
         text = stringResource(StringsR.string.library_search_no_results_message),
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 32.dp),
@@ -55,7 +78,7 @@ internal fun IdleSearch(
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
       )
-    } else {
+    } else if (recentSearches.isNotEmpty()) {
       Row(
         modifier = Modifier.fillMaxWidth().heightIn(min = 40.dp).padding(start = 8.dp),
         verticalAlignment = Alignment.CenterVertically,

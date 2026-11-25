@@ -37,6 +37,9 @@ data class BookOverviewViewState(
   val listenedThisWeek: Duration? = null,
   val supportCard: SupportCardViewState? = null,
   val asmrSyncState: AsmrSyncState = AsmrSyncState.Ready,
+  val activeKeywords: List<String> = emptyList(),
+  val suggestedKeywords: List<String> = emptyList(),
+  val noKeywordResults: Boolean = false,
 ) {
 
   // a switch only shows once it has something to filter, so a library without it stays as it was

@@ -48,6 +48,7 @@ import kotlinx.coroutines.delay
 import voice.core.strings.R as StringsR
 import voice.core.ui.R as UiR
 import voice.core.ui.VoiceTheme
+import voice.features.bookOverview.R as BookR
 import voice.features.bookOverview.search.searchBarSharedBounds
 
 @Composable
@@ -55,6 +56,7 @@ internal fun LibraryTopBar(
   showSearch: Boolean,
   showFolderAccessBadge: Boolean,
   showFilter: Boolean,
+  keywordFilterActive: Boolean = false,
   isLoading: Boolean,
   scrollBehavior: SearchBarScrollBehavior?,
   onSearchClick: () -> Unit,
@@ -86,7 +88,11 @@ internal fun LibraryTopBar(
           IconButton(onClick = onFilterClick) {
             Icon(
               painter = painterResource(UiR.drawable.ic_sort),
-              contentDescription = stringResource(StringsR.string.library_filter),
+              contentDescription =
+                stringResource(
+                  if (keywordFilterActive) BookR.string.asmr_filters_active
+                  else BookR.string.asmr_filter_keywords,
+                ),
             )
           }
         }

@@ -73,7 +73,6 @@ import voice.features.bookOverview.overview.BookOverviewLayoutMode
 import voice.features.bookOverview.overview.BookOverviewViewState
 import voice.features.bookOverview.overview.LibraryGrouping
 import voice.features.bookOverview.overview.LibraryItem
-import voice.features.bookOverview.overview.LibrarySource
 import voice.features.bookOverview.overview.SeriesStackViewState
 import voice.features.bookOverview.select.BookField
 import voice.features.bookOverview.select.SelectionEditSheet
@@ -201,9 +200,7 @@ fun BookOverviewScreen(modifier: Modifier = Modifier) {
     onSupportCardDismiss = bookOverviewViewModel::onSupportCardDismiss,
     onShowFoldersClick = bookOverviewViewModel::onShowFoldersClick,
     onShowHiddenBooksChange = bookOverviewViewModel::onShowHiddenBooksChange,
-    onGroupingChange = bookOverviewViewModel::onGroupingChange,
-    onShowNotDownloadedBooksChange = bookOverviewViewModel::onShowNotDownloadedBooksChange,
-    onSourceChange = bookOverviewViewModel::onSourceChange,
+    onKeywordFiltersChange = bookOverviewViewModel::setKeywordFilters,
     onSelectionToggle = bookOverviewViewModel::onSelectionToggle,
     onSelectAll = bookOverviewViewModel::onSelectAll,
     onSelectionClose = bookOverviewViewModel::onSelectionClose,
@@ -242,9 +239,7 @@ internal fun BookOverview(
   onSupportCardDismiss: () -> Unit,
   onShowFoldersClick: () -> Unit,
   onShowHiddenBooksChange: (Boolean) -> Unit,
-  onGroupingChange: (LibraryGrouping) -> Unit,
-  onShowNotDownloadedBooksChange: (Boolean) -> Unit,
-  onSourceChange: (LibrarySource, Boolean) -> Unit,
+  onKeywordFiltersChange: (List<String>) -> Unit,
   onSelectionToggle: (List<BookId>) -> Unit,
   onSelectAll: () -> Unit,
   onSelectionClose: () -> Unit,
@@ -280,6 +275,7 @@ internal fun BookOverview(
             showSearch = viewState.showSearchIcon,
             showFolderAccessBadge = viewState.showFolderAccessBadge,
             showFilter = viewState.showFilterIcon,
+            keywordFilterActive = viewState.activeKeywords.isNotEmpty(),
             isLoading = viewState.isLoading,
             scrollBehavior = scrollBehavior,
             onSearchClick = onSearchClick,
@@ -349,7 +345,7 @@ internal fun BookOverview(
         onSupportCardClick = onSupportCardClick,
         onSupportCardDismiss = onSupportCardDismiss,
         onShowFoldersClick = onShowFoldersClick,
-        onHiddenBooksClick = { showFilterSheet = true },
+        onHiddenBooksClick = { onShowHiddenBooksChange(!viewState.showHiddenBooks) },
         onSelectionToggle = onSelectionToggle,
       )
       AnimatedContent(
@@ -377,12 +373,13 @@ internal fun BookOverview(
     }
   }
   if (showFilterSheet) {
-    LibraryFilterSheet(
-      viewState = viewState,
-      onGroupingChange = onGroupingChange,
-      onShowHiddenBooksChange = onShowHiddenBooksChange,
-      onShowNotDownloadedBooksChange = onShowNotDownloadedBooksChange,
-      onSourceChange = onSourceChange,
+    AsmrKeywordFilterSheet(
+      activeKeywords = viewState.activeKeywords,
+      suggestions = viewState.suggestedKeywords,
+      onApply = { keywords ->
+        onKeywordFiltersChange(keywords)
+        showFilterSheet = false
+      },
       onDismiss = { showFilterSheet = false },
     )
   }
@@ -430,9 +427,7 @@ fun BookOverviewPreview(
       onSupportCardDismiss = {},
       onShowFoldersClick = {},
       onShowHiddenBooksChange = {},
-      onGroupingChange = {},
-      onShowNotDownloadedBooksChange = {},
-      onSourceChange = { _, _ -> },
+      onKeywordFiltersChange = {},
       onSelectionToggle = {},
       onSelectAll = {},
       onSelectionClose = {},

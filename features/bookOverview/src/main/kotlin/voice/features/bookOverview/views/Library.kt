@@ -60,6 +60,7 @@ import voice.core.ui.R as UiR
 import voice.core.ui.entrance
 import voice.core.ui.rememberEntranceState
 import voice.core.ui.segmentedShape
+import voice.features.bookOverview.R as BookR
 import voice.features.bookOverview.overview.AuthorEntryViewState
 import voice.features.bookOverview.overview.BookOverviewLayoutMode
 import voice.features.bookOverview.overview.BookOverviewViewState
@@ -154,6 +155,15 @@ internal fun Library(
             onShowFoldersClick,
             Modifier.entrance(entrance, index),
             viewState.asmrSyncState,
+          )
+        }
+      }
+      if (viewState.noKeywordResults) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+          Text(
+            stringResource(BookR.string.asmr_filter_empty),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
+            style = MaterialTheme.typography.bodyLarge,
           )
         }
       }

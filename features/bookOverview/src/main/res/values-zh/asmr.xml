@@ -3,4 +3,11 @@
     <string name="asmr_shelf_empty">ASMR 书架还没有作品</string>
     <string name="asmr_shelf_unavailable">无法连接 ASMR 服务器</string>
     <string name="asmr_shelf_server_settings">ASMR 服务器设置</string>
+    <string name="asmr_search_hint">搜索作品名或声优</string>
+    <string name="asmr_search_keywords">推荐关键词</string>
+    <string name="asmr_filter_keywords">关键词筛选</string>
+    <string name="asmr_filters_active">关键词筛选已启用</string>
+    <string name="asmr_filter_clear">清空筛选</string>
+    <string name="asmr_filter_apply">应用</string>
+    <string name="asmr_filter_empty">没有符合这些关键词的作品。</string>
 </resources>

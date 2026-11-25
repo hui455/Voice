@@ -215,6 +215,7 @@ class BookOverviewViewModel(
       library.shownBooks.count { it.custom.hidden && it.passesNotDownloadedFilter() }
     val notDownloadedBookCount =
       library.shownBooks.count { it.notDownloaded() && it.passesHiddenFilter() }
+    val keywords = activeKeywords
     val books =
       remember(
         library,
@@ -222,8 +223,13 @@ class BookOverviewViewModel(
         currentBook,
         showHiddenBooks,
         showNotDownloadedBooks,
+        keywords,
       ) {
-        library.shownBooks.filter { it.passesHiddenFilter() && it.passesNotDownloadedFilter() }
+        library.shownBooks.filter {
+          it.passesHiddenFilter() &&
+            it.passesNotDownloadedFilter() &&
+            it.matchesAsmrKeywords(keywords)
+        }
       }
     // a deleted book can stay the current one
     val currentBookId = currentBook.id?.takeIf { id -> books.any { it.id == id } }
@@ -374,6 +380,9 @@ class BookOverviewViewModel(
       selectionEdit = selectionEdit,
       listenedThisWeek = listenedThisWeek,
       supportCard = supportCardState,
+      activeKeywords = keywords,
+      suggestedKeywords = remember(library.books) { suggestedAsmrKeywords(library.books) },
+      noKeywordResults = keywords.isNotEmpty() && books.isEmpty(),
     )
   }
 
@@ -606,6 +615,12 @@ class BookOverviewViewModel(
 
   fun onShowFoldersClick() {
     navigator.goTo(Destination.Asmr)
+  }
+
+  private var activeKeywords by mutableStateOf(emptyList<String>())
+
+  fun setKeywordFilters(keywords: List<String>) {
+    activeKeywords = keywords.map(String::trim).filter(String::isNotEmpty).distinct()
   }
 
   fun onSurveyClick() {

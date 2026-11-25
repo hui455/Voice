@@ -18,6 +18,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -51,6 +53,7 @@ import voice.features.bookOverview.overview.byAuthorKey
 import voice.features.bookOverview.overview.libraryEntries
 import voice.features.bookOverview.overview.rememberServerBookStates
 import voice.features.bookOverview.overview.series
+import voice.features.bookOverview.overview.suggestedAsmrKeywords
 import voice.features.bookOverview.overview.toItemViewState
 import voice.navigation.Destination
 import voice.navigation.Navigator
@@ -114,7 +117,18 @@ class BookSearchViewModel(
       .value
       ?.takeIf { queryText.isNotEmpty() }
 
-    if (results == null) return BookSearchViewState.Idle(recentSearches)
+    if (results == null) {
+      val suggestions = remember {
+        repo
+          .flow()
+          .map(::suggestedAsmrKeywords)
+          .distinctUntilChanged()
+          .flowOn(dispatcherProvider.default)
+      }
+        .collectAsState(initial = emptyList())
+        .value
+      return BookSearchViewState.Idle(recentSearches, suggestions)
+    }
     if (results.results.isEmpty()) return BookSearchViewState.NoResults(results.query)
 
     val livePlaybackState = livePlaybackState(currentBookId)

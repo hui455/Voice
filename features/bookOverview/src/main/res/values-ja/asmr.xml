@@ -3,4 +3,11 @@
     <string name="asmr_shelf_empty">ASMR ライブラリは空です</string>
     <string name="asmr_shelf_unavailable">ASMR サーバーに接続できません</string>
     <string name="asmr_shelf_server_settings">ASMR サーバーの設定</string>
+    <string name="asmr_search_hint">作品名や声優名で検索</string>
+    <string name="asmr_search_keywords">おすすめのキーワード</string>
+    <string name="asmr_filter_keywords">キーワードで絞り込む</string>
+    <string name="asmr_filters_active">キーワードで絞り込み中</string>
+    <string name="asmr_filter_clear">絞り込みを解除</string>
+    <string name="asmr_filter_apply">適用</string>
+    <string name="asmr_filter_empty">キーワードに一致する作品がありません。</string>
 </resources>

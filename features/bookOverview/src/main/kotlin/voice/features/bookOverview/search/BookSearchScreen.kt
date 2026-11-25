@@ -62,6 +62,7 @@ import voice.core.data.BookId
 import voice.core.strings.R as StringsR
 import voice.core.ui.CenteredContent
 import voice.core.ui.R as UiR
+import voice.features.bookOverview.R
 import voice.features.bookOverview.di.BookOverviewGraph
 import voice.navigation.Destination
 import voice.navigation.NavEntryProvider
@@ -282,7 +283,7 @@ private fun SearchField(
     onSearch = { onSearch() },
     modifier = modifier.searchBarSharedBounds(shape).fillMaxWidth().focusRequester(focusRequester),
     placeholder = {
-      Text(stringResource(StringsR.string.library_search_hint))
+      Text(stringResource(R.string.asmr_search_hint))
     },
     leadingIcon = {
       IconButton(onClick = onBackClick) {

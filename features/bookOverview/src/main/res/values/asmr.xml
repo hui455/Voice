@@ -3,4 +3,11 @@
     <string name="asmr_shelf_empty">The ASMR library is empty</string>
     <string name="asmr_shelf_unavailable">Can’t connect to the ASMR server</string>
     <string name="asmr_shelf_server_settings">ASMR server settings</string>
+    <string name="asmr_search_hint">Search by title or voice actor</string>
+    <string name="asmr_search_keywords">Suggested keywords</string>
+    <string name="asmr_filter_keywords">Filter by keyword</string>
+    <string name="asmr_filters_active">Filter by keyword, active</string>
+    <string name="asmr_filter_clear">Clear filters</string>
+    <string name="asmr_filter_apply">Apply</string>
+    <string name="asmr_filter_empty">No works match these keywords.</string>
 </resources>

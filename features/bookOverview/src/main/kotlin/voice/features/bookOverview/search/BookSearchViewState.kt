@@ -10,7 +10,10 @@ import voice.features.bookOverview.overview.DownloadBadge
 sealed interface BookSearchViewState {
 
   /** Nothing typed yet. [recentSearches] is null until they are read. */
-  data class Idle(val recentSearches: List<String>?) : BookSearchViewState
+  data class Idle(
+    val recentSearches: List<String>?,
+    val suggestedKeywords: List<String> = emptyList(),
+  ) : BookSearchViewState
 
   data class Results(
     val topResult: SearchResultViewState,
